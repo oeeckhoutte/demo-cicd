@@ -1,0 +1,31 @@
+# This file is a template, and might need editing before it works on your project.
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+cache:
+  paths:
+  - node_modules/
+
+
+test:
+  image: node:latest
+  stage: test
+  script:
+    - npm install
+    - npm test
+
+
+docker-build:
+  image: docker/dind:oc
+  script:
+    - oc version
+    - oc login $OC_URL --username $OC_LOGIN --password $OC_PASSWORD
+    - docker version
+    - oc start-build demo-app
+  tags: 
+  - docker
+  stage: deploy
+  except:
+  - tags
