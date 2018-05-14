@@ -22,6 +22,7 @@ docker-build:
   script:
     - oc version
     - oc login $OC_URL --username $OC_LOGIN --password $OC_PASSWORD
+    - oc project adeo-demo-cicd-gitlab-prep
     - docker version
     - oc start-build demo-app
   tags: 
